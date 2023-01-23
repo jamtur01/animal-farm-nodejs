@@ -3,7 +3,6 @@ name: Animal Farm Node.js CI
 on:
   push:
    branches:
-      - main
       - feature-action
   pull_request:
     branches:
