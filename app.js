@@ -23,7 +23,7 @@ app.get('/', function(req, res){
   res.write(`George Orwell had a farm.<br />
 E-I-E-I-O<br />
 And on his farm he had a ${ animal_name }.<br />
-E-I-E-I-O<br />
+E-I-E-I-OOO<br />
 With a ${ sound }-${ sound } here.<br />
 And a ${ sound }-${ sound } there.<br />
 Here a ${ sound }, there a ${ sound }.<br />
