@@ -25,10 +25,9 @@ describe('GET', function(){
     .expect(200, done);
   })
 
-  it('/api responds with animals object', function(done){
-    request
-    .get('/api')
-    .set('Accept', 'application/json')
-    .expect(200, {"cat":"meow","dog":"bark","eel":"hiss","bear":"growl","frog":"croak","lion":"roar"}, done);
+  it('/api responds with animals object', function(done){ request 
+    .get('/api') .set('Accept', 'application/json') .expect(200, 
+    {"cat":"meow","dog":"bark","eel":"hiss","bear":"growl","frog":"croak","lion":"roar", 
+    "dragon": "rrrroooo"}, done);
   })
 })
