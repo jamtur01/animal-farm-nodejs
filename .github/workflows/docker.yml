@@ -39,4 +39,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: | #
-            pgrdaw/animalfarm-js: latest
+            pgrdaw-23-24/animalfarmnodejs: latest
