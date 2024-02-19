@@ -2,10 +2,10 @@
 
 A sample Express application written in Node.js for a Github README post.
 
-##  Prerequisites
+## Prerequisites
 
-* Node.js
-* yarn
+- Node.js
+- yarn
 
 ### Install modules
 
@@ -31,7 +31,7 @@ node app.js
 
 ## Tests
 
-You can also run the tests via `yarn`:
+You can also run the test via `yarn`:
 
 ```shell
 yarn test
