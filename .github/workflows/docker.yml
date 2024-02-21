@@ -33,4 +33,4 @@ jobs:
          file: ./Dockerfile
          push: true
          tags: | #
-           josgargra-alu-edu-gva-es/animalfarm-nodejs:latest
+           / animalfarm-js: latest
