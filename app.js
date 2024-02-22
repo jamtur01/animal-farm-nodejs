@@ -8,7 +8,8 @@ var animals = {
     "eel": "hiss",
     "bear": "growl",
     "frog": "croak",
-    "lion": "roar"
+    "lion": "roar",
+	"turtle": "eep"
 }
 
 function getAnimal() {
@@ -37,6 +38,6 @@ app.get('/api', function(req, res){
   res.end();
 })
 
-module.exports =  app.listen(port, () => {
-  console.log(`Launching server on http://localhost:${ port }`)
+module.exports =  app.listen(port, '0.0.0.0', () => {
+  console.log(`Launching server on ${ port }`)
 });
