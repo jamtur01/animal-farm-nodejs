@@ -1,9 +1,4 @@
-name: Publish Docker image
-
-on:
-  push:
-    branches:
-      - maname: Publicar imagen Docker
+name: Publicar imagen Docker
 
 on: 
   push:
