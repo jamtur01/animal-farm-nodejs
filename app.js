@@ -10,7 +10,8 @@ var animals = {
     "frog": "croak",
     "lion": "roar",
     "pikachu":"pikachu",
-    "wolf":"auu"
+    "wolf":"auu",
+    "tiger":"grau"
 }
 
 function getAnimal() {
