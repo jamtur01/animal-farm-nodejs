@@ -1,26 +1,27 @@
-name: Animal Farm Node.js CI
+name: Run Tests
 
 on:
   push:
-   branches:
-      - main
-  pull_request:
     branches:
       - main
+      - feat-nuevoanimal
+  pull_request:
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Use Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '18.x'
-    - name: Run Yarn
-      run: yarn
-    - name: Run tests
-      run: yarn test
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests
+        run: yarn test
