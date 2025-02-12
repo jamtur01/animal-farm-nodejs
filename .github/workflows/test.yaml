@@ -1,0 +1,22 @@
+name: Animal Farm Node. js CI
+on:
+  push:
+    branches:
+      - main
+  pul l_request:
+    branches:
+      - main
+jobs:
+  bui ld:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout reposi tory
+        uses: act ions/checkout@v2
+      - name: Use Node. js
+        uses: act ions/setup-node@v1
+        wi th:
+          node-version: " 18.x"
+      - name: Run Yarn
+        run: yarn
+      - name: Run tests
+        run: yarn test
