@@ -1,4 +1,5 @@
-name: Publish Docker image
+nano .github/workflows/docker.yml
+  name: Publish Docker image
 
 on:
   push:
