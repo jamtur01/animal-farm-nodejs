@@ -36,3 +36,5 @@ You can also run the tests via `yarn`:
 ```shell
 yarn test
 ```
+Prueba de CI/CD con GitHub Actions.
+
