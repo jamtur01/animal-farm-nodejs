@@ -1,7 +1,7 @@
 const express = require('express');
 const _ = require('underscore');
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 var animals = {
     "cat": "meow",
     "dog": "bark",
@@ -28,15 +28,17 @@ With a ${ sound }-${ sound } here.<br />
 And a ${ sound }-${ sound } there.<br />
 Here a ${ sound }, there a ${ sound }.<br />
 Everywhere a ${ sound }-${ sound }.<br />`);
-      res.end();
-});
-
-app.get('/api', function(req, res){
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.write(JSON.stringify(animals));
   res.end();
-})
-
-module.exports =  app.listen(port, () => {
-  console.log(`Launching server on http://localhost:${ port }`)
 });
+
+// Ruta API necesaria para que pasen los tests 3 y 4
+app.get('/api', function(req, res){
+  res.status(200).json(animals);
+});
+
+app.listen(port, '0.0.0.0', function() {
+  console.log('Listening on port ' + port);
+});
+
+module.exports = app;
+

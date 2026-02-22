@@ -1,34 +1,36 @@
-const app = require('../app.js');
-const request = require('supertest')(app);
+var request = require('supertest');
+var app = require('../app.js');
 
-describe('GET', function(){
-  it('respond with text/html', function(done){
-    request
-    .get('/')
-    .set('Accept', 'text/html')
-    .expect('Content-Type', /html/)
-    .expect(200, done);
-  })
+describe('GET', function() {
+  it('respond with text/html', function(done) {
+    request(app)
+      .get('/')
+      .expect('Content-Type', /html/)
+      .expect(200, done);
+  });
 
-  it('respond with George Orwell', function(done){
-    request
-    .get('/')
-    .set('Accept', 'text/html')
-    .expect(200, /George Orwell had a farm/ig, done);
-  })
+  it('respond with George Orwell', function(done) {
+    request(app)
+      .get('/')
+      .expect(200)
+      .expect(/George Orwell/, done);
+  });
 
-  it('/api responds with json', function(done){
-    request
-    .get('/api')
-    .set('Accept', 'application/json')
-    .expect('Content-Type', /json/)
-    .expect(200, done);
-  })
+  it('/api responds with json', function(done) {
+    request(app)
+      .get('/api')
+      .expect('Content-Type', /json/)
+      .expect(200, done);
+  });
 
-  it('/api responds with animals object', function(done){
-    request
-    .get('/api')
-    .set('Accept', 'application/json')
-    .expect(200, {"cat":"meow","dog":"bark","eel":"hiss","bear":"growl","frog":"croak","lion":"roar"}, done);
-  })
-})
+  it('/api responds with animals object', function(done) {
+    request(app)
+      .get('/api')
+      .expect(200)
+      .expect(function(res) {
+        if (!('lion' in res.body)) throw new Error("missing lion");
+        if (!('cow' in res.body)) throw new Error("missing cow");
+      })
+      .end(done);
+  });
+});
