@@ -1,0 +1,36 @@
+name: Temporal CLI Integration
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  temporal-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out your repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # Step 2: Install the Temporal CLI
+      - name: Install Temporal CLI
+        uses: temporalio/setup-temporal@v0
+        with:
+          # Optional: specify a version (defaults to latest)
+          version: v1.7.2 
+
+      # Step 3: Use the CLI (Example: Starting a local dev server)
+      - name: Start Local Temporal Server
+        run: |
+          temporal server start-dev --headless &
+          
+      # Step 4: Run your Temporal commands
+      - name: Execute Temporal CLI Commands
+        run: |
+          # Wait briefly for the local dev server to boot up
+          sleep 3
+          
+          # Example command to list namespaces
+          temporal operator namespace list
