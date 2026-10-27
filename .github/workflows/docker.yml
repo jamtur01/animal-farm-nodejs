@@ -5,39 +5,70 @@ on:
     branches:
       - main
 
+# Needed so the built-in GITHUB_TOKEN can push to GHCR for *your* fork.
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    env:
+      # Secrets context can't be used in a step `if:`, so surface the
+      # (non-password) username through env for the conditional below.
+      HAS_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
     steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v1
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Optional: only runs if you added DOCKERHUB_USERNAME / DOCKERHUB_TOKEN
+      # secrets in your own repo (Settings > Secrets and variables > Actions).
+      - name: Login to DockerHub
+        if: ${{ env.HAS_DOCKERHUB_USERNAME != '' }}
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+
+      # GHCR uses the built-in token - no GHRC_TOKEN / GHCR_TOKEN secret to create.
+      # The tutorial's `secrets.GHRC_TOKEN` does not exist automatically and fails.
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHRC_TOKEN }}
-      -
-        name: Build and push
-        uses: docker/build-push-action@v2
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute image tags for this repository
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            jamtur01/animal-farm-nodejs:latest
-            ghcr.io/jamtur01/animal-farm-nodejs:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      # Only runs when DockerHub secrets are set (reuses the cached build).
+      - name: Build and push to DockerHub
+        if: ${{ env.HAS_DOCKERHUB_USERNAME != '' }}
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ env.HAS_DOCKERHUB_USERNAME }}/animal-farm-nodejs:latest
